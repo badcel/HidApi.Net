@@ -1,0 +1,100 @@
+name: 'CI'
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: If this build should publish nuget packages
+        required: true
+        type: boolean
+      preview:
+        description: If this is a preview package
+        required: true
+        type: boolean
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+  pull_request:
+
+env:
+  configuration: Release
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest, macos-latest, ubuntu-22.04 ]
+    
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Prepare .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Build solution
+        run: dotnet build --nologo -c ${{ env.configuration }}
+        working-directory: './src'
+
+      - name: Verify code format
+        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        run: dotnet format --no-restore --verify-no-changes
+        working-directory: './src'
+
+      - name: Test Linux 64 bit
+        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        run: |
+          sudo apt-get install libhidapi-hidraw0
+          dotnet run -- --requireOsPlatform LINUX --require64bit
+        working-directory: './src/HidApi.Net.Tester'
+
+      - name: Test OSX 64 bit
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          brew install hidapi
+          dotnet run -- --requireOsPlatform OSX --require64bit
+        working-directory: './src/HidApi.Net.Tester'
+
+      - name: Setup Windows 64 bit
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: msys2/setup-msys2@v2
+        with:
+          path-type: inherit
+          install: >-
+            mingw-w64-x86_64-hidapi
+
+      - name: Test Windows 64 bit
+        if: ${{ matrix.os == 'Windows-latest' }}
+        run: dotnet run -- --requireOsPlatform WINDOWS --require64bit
+        shell: msys2 {0}
+        working-directory: './src/HidApi.Net.Tester'
+
+      - name: Get current time
+        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        uses: josStorer/get-current-time@v2.0.1
+        id: current-time
+        with:
+          format: YYYYMMDD-HHmmss
+
+      - name: Pack preview version
+        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'true' && matrix.os == 'ubuntu-22.04'}}
+        run: dotnet pack --no-build --nologo -c ${{ env.configuration }} --version-suffix "CI-${{ steps.current-time.outputs.formattedTime }}" -o ../Nuget
+        working-directory: './src'
+
+      - name: Pack release version
+        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'false' && matrix.os == 'ubuntu-22.04' }}
+        run: dotnet pack --no-build --nologo -c ${{ env.configuration }} -o ../Nuget
+        working-directory: './src'
+
+      - name: Publish to nuget org
+        if: ${{ github.event.inputs.publish == 'true' && matrix.os == 'ubuntu-22.04' }}
+        run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s nuget.org
+        working-directory: './Nuget'
