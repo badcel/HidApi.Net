@@ -13,6 +13,7 @@
     <Copyright>Marcel Tiede</Copyright>
     <owners>badcel</owners>
 
+    <Description>A modern cross platform C# binding for HIDAPI</Description>
     <PackageProjectUrl>https://github.com/badcel/HidApi.Net</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
