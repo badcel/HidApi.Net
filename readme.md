@@ -12,7 +12,7 @@ You can use the [Hid class](https://github.com/badcel/HidApi.Net/blob/main/src/H
 ```csharp
 foreach(var deviceInfo in Hid.Enumerate())
 {
-    using var device = deviceInfo.ConnectToDevce();
+    using var device = deviceInfo.ConnectToDevice();
     Console.WriteLine(device.GetManufacturer());
 }
 Hid.Exit(); //Call at the end of your program
