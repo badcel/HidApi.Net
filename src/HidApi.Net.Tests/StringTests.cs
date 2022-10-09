@@ -53,4 +53,17 @@ public class StringTests
             }
         }
     }
+
+
+    [TestMethod]
+    public unsafe void CanCreateNullTerminatedString()
+    {
+        var result = "MyString";
+        var nullTerminatedString = WCharT.CreateNullTerminatedString(result);
+        fixed (byte* ptr = nullTerminatedString)
+        {
+            var r = WCharT.GetString(ptr);
+            r.Should().Be(result);
+        }
+    }
 }

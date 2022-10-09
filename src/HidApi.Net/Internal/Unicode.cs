@@ -4,6 +4,15 @@ namespace HidApi;
 
 internal static class Unicode
 {
+    public static NullTerminatedString CreateNullTerminatedString(string str)
+    {
+        var src = Encoding.Unicode.GetBytes(str);
+        var dest = new byte[src.Length + sizeof(ushort)];
+        Array.Copy(src, dest, src.Length);
+
+        return new NullTerminatedString(ref dest);
+    }
+
     public static ReadOnlySpan<byte> CreateBuffer(int size)
     {
         return new byte[size * sizeof(ushort)];

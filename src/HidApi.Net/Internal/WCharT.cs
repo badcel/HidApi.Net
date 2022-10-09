@@ -46,4 +46,18 @@ internal static class WCharT
 
         throw new Exception("Unsupported platform to create a buffer");
     }
+
+    public static NullTerminatedString CreateNullTerminatedString(string str)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            return Utf32.CreateNullTerminatedString(str);
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return Unicode.CreateNullTerminatedString(str);
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return Utf32.CreateNullTerminatedString(str);
+
+        throw new Exception("Unsupported platform to create a null terminated string");
+    }
 }
