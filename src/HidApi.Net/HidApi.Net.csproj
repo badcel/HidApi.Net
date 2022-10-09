@@ -2,11 +2,7 @@
   <PropertyGroup>
     <VersionPrefix>0.1.1</VersionPrefix>
 
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <RootNamespace>HidApi</RootNamespace>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <Authors>Marcel Tiede</Authors>
@@ -32,6 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
     <InternalsVisibleTo Include="$(AssemblyName).Tester" />
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
     <None Include="../../readme.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 </Project>

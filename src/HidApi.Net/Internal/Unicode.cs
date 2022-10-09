@@ -4,11 +4,9 @@ namespace HidApi;
 
 internal static class Unicode
 {
-    private const int UnicodeSize = 2;
-
     public static ReadOnlySpan<byte> CreateBuffer(int size)
     {
-        return new byte[size * UnicodeSize];
+        return new byte[size * sizeof(ushort)];
     }
 
     public static unsafe string Read(byte* ptr)
@@ -25,13 +23,13 @@ internal static class Unicode
         //check code to throw exception in case of arithmethic overflow
         checked
         {
-            var current = ptr;
+            var current = (ushort*) ptr;
             while (*current != 0)
             {
-                current += UnicodeSize; //Jump to next unicode char
+                current += 1; //Jump to next unicode char
             }
 
-            return (int) (current - ptr);
+            return (int) ((byte*) current - ptr);
         }
     }
 }

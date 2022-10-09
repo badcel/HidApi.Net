@@ -4,11 +4,9 @@ namespace HidApi;
 
 internal static class Utf32
 {
-    private const int Utf32Size = 4;
-
     public static ReadOnlySpan<byte> CreateBuffer(int size)
     {
-        return new byte[size * Utf32Size];
+        return new byte[size * sizeof(uint)];
     }
 
     public static unsafe string Read(byte* ptr)
@@ -25,13 +23,13 @@ internal static class Utf32
         //check code to throw exception in case of arithmethic overflow
         checked
         {
-            var current = ptr;
+            var current = (uint*) ptr;
             while (*current != 0)
             {
-                current += Utf32Size; //Jump to next UTF32 char
+                current += 1; //Jump to next UTF32 char
             }
 
-            return (int) (current - ptr);
+            return (int) ((byte*) current - ptr);
         }
     }
 }
