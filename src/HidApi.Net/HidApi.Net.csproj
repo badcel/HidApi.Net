@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <VersionPrefix>0.1.2</VersionPrefix>
+    <VersionPrefix>0.2.0</VersionPrefix>
 
     <RootNamespace>HidApi</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     <InternalsVisibleTo Include="$(AssemblyName).Tester" />
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
     <None Include="../../readme.md" Pack="true" PackagePath="/" />

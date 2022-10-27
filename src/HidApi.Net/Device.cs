@@ -15,7 +15,21 @@ public class Device : IDisposable
     /// <param name="productId">product id of target device</param>
     public Device(ushort vendorId, ushort productId)
     {
-        handle = NativeMethods.Open(vendorId, productId, string.Empty);
+        handle = NativeMethods.Open(vendorId, productId, NullTerminatedString.Empty);
+
+        if (handle.IsInvalid)
+            HidException.Throw(handle);
+    }
+
+    /// <summary>
+    /// Connects to a given device.
+    /// </summary>
+    /// <param name="vendorId">Vendor id of target device</param>
+    /// <param name="productId">Product id of target device</param>
+    /// <param name="serialNumber">Serial number of target device</param>
+    public Device(ushort vendorId, ushort productId, string serialNumber)
+    {
+        handle = NativeMethods.Open(vendorId, productId, WCharT.CreateNullTerminatedString(serialNumber));
 
         if (handle.IsInvalid)
             HidException.Throw(handle);

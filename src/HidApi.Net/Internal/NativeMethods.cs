@@ -36,6 +36,17 @@ internal static class NativeMethods
         throw new Exception($"Could not find hidapi library tried: {string.Join(", ", libraries)}");
     }
 
+    public static DeviceSafeHandle Open(ushort vendorId, ushort productId, NullTerminatedString serialNumber)
+    {
+        unsafe
+        {
+            fixed (byte* ptr = serialNumber)
+            {
+                return Open(vendorId, productId, ptr);
+            }
+        }
+    }
+
     public static int Write(DeviceSafeHandle device, ReadOnlySpan<byte> data)
     {
         return Write(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
@@ -99,7 +110,7 @@ internal static class NativeMethods
     public static extern unsafe void FreeEnumeration(NativeDeviceInfo* devices);
 
     [DllImport(Library, EntryPoint = "hid_open")]
-    public static extern DeviceSafeHandle Open(ushort vendorId, ushort productId, [MarshalAs(UnmanagedType.LPWStr)] string serialNumber);
+    private static extern unsafe DeviceSafeHandle Open(ushort vendorId, ushort productId, byte* serialNumber);
 
     [DllImport(Library, EntryPoint = "hid_open_path")]
     public static extern DeviceSafeHandle OpenPath([MarshalAs(UnmanagedType.LPStr)] string path);
