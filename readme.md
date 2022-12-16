@@ -1,5 +1,5 @@
 # HidApi.Net
-[![Build Status](https://img.shields.io/github/workflow/status/badcel/HidApi.Net/CI)](https://github.com/badcel/HidApi.Net/actions/workflows/ci.yml)[![NuGet](https://img.shields.io/nuget/v/HidApi.Net)](https://www.nuget.org/packages/HidApi.Net/)[![License (MIT)](https://img.shields.io/github/license/badcel/HidApi.Net)](https://github.com/badcel/HidApi.Net/blob/main/license.txt)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/badcel/HidApi.Net/ci.yml?branch=main)](https://github.com/badcel/HidApi.Net/actions/workflows/ci.yml)[![NuGet](https://img.shields.io/nuget/v/HidApi.Net)](https://www.nuget.org/packages/HidApi.Net/)[![License (MIT)](https://img.shields.io/github/license/badcel/HidApi.Net)](https://github.com/badcel/HidApi.Net/blob/main/license.txt)
 
 Welcome to HidApi.Net a modern .NET 6 cross platform C# binding for the C [HIDAPI] library. Supported platforms are Linux, OSX and Windows.
 
