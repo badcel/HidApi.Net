@@ -8,14 +8,6 @@ internal static class NativeMethods
     private const string Library = "HidApi";
     private static IntPtr libraryHandle = IntPtr.Zero;
 
-    private static readonly string[] libraries =
-    {
-        "libhidapi-hidraw.so.0", //Linux
-        "hidapi.dll", //Win: Official release package
-        "libhidapi-0.dll", //Win: MSYS 2 package
-        "libhidapi.dylib", //MacOs
-    };
-
     static NativeMethods()
     {
         NativeLibrary.SetDllImportResolver(typeof(NativeMethods).Assembly, Resolve);
@@ -29,11 +21,11 @@ internal static class NativeMethods
         if (libraryHandle != IntPtr.Zero)
             return libraryHandle;
 
-        foreach (var library in libraries)
+        foreach (var library in NativeHidApiLibrary.GetNames())
             if (NativeLibrary.TryLoad(library, assembly, searchPath, out libraryHandle))
                 return libraryHandle;
 
-        throw new Exception($"Could not find hidapi library tried: {string.Join(", ", libraries)}");
+        throw new Exception($"Could not find hidapi library tried: {string.Join(", ", NativeHidApiLibrary.GetNames())}");
     }
 
     public static DeviceSafeHandle Open(ushort vendorId, ushort productId, NullTerminatedString serialNumber)

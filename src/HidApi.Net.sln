@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
 		..\.github\dependabot.yml = ..\.github\dependabot.yml
 		Directory.Build.props = Directory.Build.props
+		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HidApi.Net.Benchmark", "HidApi.Net.Benchmark\HidApi.Net.Benchmark.csproj", "{0AFE95CC-90A8-490A-8FE5-2604A1BB13CE}"
