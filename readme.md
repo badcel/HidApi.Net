@@ -37,7 +37,8 @@ $ dotnet build
 ```
 
 ## Licensing terms
-HidApi.Net is licensed under the terms of the MIT-License. Please see the [license file](license.txt) for further information.
+HidApi.Net is licensed under the terms of the MIT-License. Please see the [license file][license] for further information.
 
 [HIDAPI]:https://github.com/libusb/hidapi
-[UDEV]:https://github.com/libusb/hidapi/blob/master/udev/69-hid.rules
+[udev]:https://github.com/libusb/hidapi/blob/master/udev/69-hid.rules
+[license]:https://raw.githubusercontent.com/badcel/HidApi.Net/main/license.txt
