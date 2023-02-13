@@ -15,7 +15,7 @@ public class Osx : HidApiVerifier
 
     public bool VerifyWCharPointer()
     {
-        const string Expected = "hid_error is not implemented yet";
+        const string Expected = "Success";
         unsafe
         {
             var ptr = NativeMethods.Error(DeviceSafeHandle.Null);
