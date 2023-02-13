@@ -16,7 +16,7 @@ public class Windows : HidApiVerifier
     public bool VerifyWCharPointer()
     {
         string? result;
-        const string Expected = "hid_error for global errors is not implemented yet";
+        const string Expected = "Success";
         unsafe
         {
             var ptr = NativeMethods.Error(DeviceSafeHandle.Null);
