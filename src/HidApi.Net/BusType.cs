@@ -1,6 +1,5 @@
 namespace HidApi;
 
-#if HIDAPI_0130
 /// <summary>
 /// An enum describing the different bus types.
 /// </summary>
@@ -13,4 +12,3 @@ public enum BusType
     I2C = 0x03,
     Spi = 0x04
 }
-#endif
