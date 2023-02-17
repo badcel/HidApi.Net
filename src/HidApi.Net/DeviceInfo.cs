@@ -15,9 +15,7 @@ namespace HidApi;
 /// <param name="UsagePage">Usage page</param>
 /// <param name="Usage">Usage</param>
 /// <param name="InterfaceNumber">interface number</param>
-#if HIDAPI_0130
 /// <param name="BusType"><see cref="BusType"/> (Available since hidapi 0.13.0)</param>
-#endif
 public record DeviceInfo(
     string Path
     , ushort VendorId
@@ -29,9 +27,7 @@ public record DeviceInfo(
     , ushort UsagePage
     , ushort Usage
     , int InterfaceNumber
-#if HIDAPI_0130
     , BusType BusType
-#endif
 )
 {
     /// <summary>
@@ -56,9 +52,7 @@ public record DeviceInfo(
             , UsagePage: nativeDeviceInfo->UsagePage
             , Usage: nativeDeviceInfo->Usage
             , InterfaceNumber: nativeDeviceInfo->InterfaceNumber
-#if HIDAPI_0130
             , BusType: nativeDeviceInfo->BusType
-#endif
         );
     }
 }

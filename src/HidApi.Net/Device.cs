@@ -232,7 +232,6 @@ public class Device : IDisposable
         return WCharT.GetString(buffer);
     }
 
-#if HIDAPI_0130
     /// <summary>
     /// Returns the device info for a device.
     /// </summary>
@@ -250,7 +249,6 @@ public class Device : IDisposable
             return DeviceInfo.From(ptr);
         }
     }
-#endif
 
     /// <summary>
     /// Returns a string from its index.

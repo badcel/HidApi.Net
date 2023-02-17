@@ -16,7 +16,6 @@ internal readonly unsafe struct NativeDeviceInfo
     public readonly ushort Usage;
     public readonly int InterfaceNumber;
     public readonly NativeDeviceInfo* Next;
-#if HIDAPI_0130 
+    /// <remarks>Available since hidapi 0.13.0</remarks>
     public readonly BusType BusType;
-#endif
 };
