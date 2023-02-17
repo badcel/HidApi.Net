@@ -90,12 +90,12 @@ jobs:
 
       - name: Pack preview version
         if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'true' && matrix.os == 'ubuntu-22.04'}}
-        run: dotnet pack --no-build --nologo -c ${{ env.configuration }} --version-suffix "CI-${{ steps.current-time.outputs.formattedTime }}" -o ../Nuget
+        run: dotnet pack HidApi.Net/HidApi.Net.csproj --no-build --nologo -c ${{ env.configuration }} --version-suffix "CI-${{ steps.current-time.outputs.formattedTime }}" -o ../Nuget
         working-directory: './src'
 
       - name: Pack release version
         if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'false' && matrix.os == 'ubuntu-22.04' }}
-        run: dotnet pack --no-build --nologo -c ${{ env.configuration }} -o ../Nuget
+        run: dotnet pack HidApi.Net/HidApi.Net.csproj --no-build --nologo -c ${{ env.configuration }} -o ../Nuget
         working-directory: './src'
 
       - name: Publish to nuget org
