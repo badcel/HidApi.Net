@@ -3,7 +3,7 @@
 
 Welcome to HidApi.Net a modern .NET 6 cross platform C# binding for the C [HIDAPI] library. Supported platforms are Linux, OSX and Windows.
 
-Supported HIDAPI version: 0.13
+Supported HIDAPI version: Up to 0.14
 
 ## Use
 To use the library please reference the [nuget package](https://www.nuget.org/packages/HidApi.Net/) in your project. Additionally it is required to either ensure that [HIDAPI] is available on the host system or is distributed as part of your application.

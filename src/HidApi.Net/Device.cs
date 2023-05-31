@@ -272,6 +272,28 @@ public class Device : IDisposable
     }
 
     /// <summary>
+    /// Gets the report descriptor of the device.
+    /// </summary>
+    /// <param name="bufSize">Max length of the expected data.</param>
+    /// <returns>The report descriptor</returns>
+    /// <remarks>Available since hidapi 0.14.0</remarks>
+    /// <exception cref="ArgumentOutOfRangeException">Raised if bufLength is less than 0</exception>
+    public ReadOnlySpan<byte> GetReportDescriptor(int bufSize = 4096)
+    {
+        if (bufSize < 0)
+            throw new ArgumentOutOfRangeException(nameof(bufSize), bufSize, "Please provide a positive value");
+
+        var data = new byte[bufSize];
+        ReadOnlySpan<byte> spanData = data;
+        var result = NativeMethods.GetReportDescriptor(handle, spanData);
+
+        if (result == -1)
+            HidException.Throw(handle);
+
+        return spanData[..result];
+    }
+
+    /// <summary>
     /// Frees all unmanaged resources.
     /// </summary>
     public void Dispose()

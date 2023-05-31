@@ -89,6 +89,11 @@ internal static class NativeMethods
         return GetInputReport(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
     }
 
+    public static int GetReportDescriptor(DeviceSafeHandle device, ReadOnlySpan<byte> buf)
+    {
+        return GetReportDescriptor(device, ref MemoryMarshal.GetReference(buf), (nuint) buf.Length);
+    }
+
     [DllImport(Library, EntryPoint = "hid_init")]
     public static extern int Init();
 
@@ -145,6 +150,9 @@ internal static class NativeMethods
 
     [DllImport(Library, EntryPoint = "hid_get_indexed_string")]
     private static extern int GetIndexedString(DeviceSafeHandle device, int stringIndex, ref byte buffer, nuint maxLength);
+
+    [DllImport(Library, EntryPoint = "hid_get_report_descriptor")]
+    private static extern int GetReportDescriptor(DeviceSafeHandle device, ref byte buf, nuint bufSize);
 
     [DllImport(Library, EntryPoint = "hid_error")]
     public static extern unsafe byte* Error(DeviceSafeHandle device);
