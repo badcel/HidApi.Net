@@ -109,7 +109,11 @@ internal static class NativeMethods
     [DllImport(Library, EntryPoint = "hid_open")]
     private static extern unsafe DeviceSafeHandle Open(ushort vendorId, ushort productId, byte* serialNumber);
 
-    [DllImport(Library, EntryPoint = "hid_open_path")]
+    [DllImport(Library,
+        EntryPoint = "hid_open_path",
+        CharSet = CharSet.Ansi,
+        BestFitMapping = false,
+        ThrowOnUnmappableChar = true)]
     public static extern DeviceSafeHandle OpenPath([MarshalAs(UnmanagedType.LPStr)] string path);
 
     [DllImport(Library, EntryPoint = "hid_write")]
