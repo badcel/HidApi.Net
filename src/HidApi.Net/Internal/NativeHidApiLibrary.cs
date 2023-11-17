@@ -15,7 +15,7 @@ internal static class NativeHidApiLibrary
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             return GetOsxNames();
 
-        throw new Exception("Unsupported platform to get hidapi library name");
+        throw new NotSupportedException("Unsupported platform to get hidapi library name");
     }
 
     private static IEnumerable<string> GetLinuxNames()

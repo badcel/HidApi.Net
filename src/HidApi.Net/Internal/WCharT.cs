@@ -16,7 +16,7 @@ internal static class WCharT
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             return Encoding.UTF32.GetString(buffer);
 
-        throw new Exception("Unsupported platform to read from buffer");
+        throw new NotSupportedException("Unsupported platform to read from buffer");
     }
 
     public static unsafe string GetString(byte* ptr)
@@ -30,7 +30,7 @@ internal static class WCharT
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             return Utf32.Read(ptr);
 
-        throw new Exception("Unsupported platform to read from pointer");
+        throw new NotSupportedException("Unsupported platform to read from pointer");
     }
 
     public static ReadOnlySpan<byte> CreateBuffer(int size)
@@ -44,7 +44,7 @@ internal static class WCharT
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             return Utf32.CreateBuffer(size);
 
-        throw new Exception("Unsupported platform to create a buffer");
+        throw new NotSupportedException("Unsupported platform to create a buffer");
     }
 
     public static NullTerminatedString CreateNullTerminatedString(string str)
@@ -58,6 +58,6 @@ internal static class WCharT
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             return Utf32.CreateNullTerminatedString(str);
 
-        throw new Exception("Unsupported platform to create a null terminated string");
+        throw new NotSupportedException("Unsupported platform to create a null terminated string");
     }
 }
