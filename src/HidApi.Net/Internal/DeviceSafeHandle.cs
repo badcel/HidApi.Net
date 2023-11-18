@@ -7,7 +7,7 @@ internal class DeviceSafeHandle : SafeHandle
     public static readonly DeviceSafeHandle Null = new();
     public override bool IsInvalid => handle == IntPtr.Zero;
 
-    private DeviceSafeHandle() : base(IntPtr.Zero, true) { }
+    internal DeviceSafeHandle() : base(IntPtr.Zero, true) { }
 
     protected override bool ReleaseHandle()
     {
