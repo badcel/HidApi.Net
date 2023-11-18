@@ -25,7 +25,7 @@ internal static class NativeMethods
             if (NativeLibrary.TryLoad(library, assembly, searchPath, out libraryHandle))
                 return libraryHandle;
 
-        throw new Exception($"Could not find hidapi library tried: {string.Join(", ", NativeHidApiLibrary.GetNames())}");
+        throw new DllNotFoundException($"Could not find hidapi library tried: {string.Join(", ", NativeHidApiLibrary.GetNames())}");
     }
 
     public static DeviceSafeHandle Open(ushort vendorId, ushort productId, NullTerminatedString serialNumber)
