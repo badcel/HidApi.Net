@@ -50,13 +50,13 @@ internal static class WCharT
     public static NullTerminatedString CreateNullTerminatedString(string str)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            return Utf32.CreateNullTerminatedString(str);
+            return NullTerminatedString.WithUtf32(str);
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            return Unicode.CreateNullTerminatedString(str);
+            return NullTerminatedString.WithUnicode(str);
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            return Utf32.CreateNullTerminatedString(str);
+            return NullTerminatedString.WithUtf32(str);
 
         throw new NotSupportedException("Unsupported platform to create a null terminated string");
     }

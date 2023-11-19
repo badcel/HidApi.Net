@@ -4,15 +4,6 @@ namespace HidApi;
 
 internal static class Utf32
 {
-    public static NullTerminatedString CreateNullTerminatedString(string str)
-    {
-        var src = Encoding.UTF32.GetBytes(str);
-        var dest = new byte[src.Length + sizeof(uint)];
-        Array.Copy(src, dest, src.Length);
-
-        return new NullTerminatedString(ref dest);
-    }
-
     public static ReadOnlySpan<byte> CreateBuffer(int size)
     {
         return new byte[size * sizeof(uint)];

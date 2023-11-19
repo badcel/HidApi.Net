@@ -73,7 +73,7 @@ public static class Tester
         return false;
     }
 
-    private static HidApiVerifier GetVerifier()
+    private static IHidApiVerifier GetVerifier()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             return new Linux();
@@ -84,7 +84,7 @@ public static class Tester
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             return new Osx();
 
-        throw new Exception("No verifier available for os platform.");
+        throw new NotSupportedException("No verifier available for os platform.");
     }
 
     private static OSPlatform GetOsPlatform()
@@ -101,6 +101,6 @@ public static class Tester
         if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
             return OSPlatform.FreeBSD;
 
-        throw new Exception("Unknown OsPlatform");
+        throw new NotSupportedException("Unknown OsPlatform");
     }
 }

@@ -9,6 +9,7 @@ public class StringTests
     [TestMethod]
     public void TestUnicode()
     {
+#pragma warning disable CA1861
         var data = new byte[6];
         data[0] = 0;
         data[1] = 1;
@@ -25,11 +26,13 @@ public class StringTests
                 str.Should().Be(new string(new[] { '\u0100', '\u0100' }));
             }
         }
+#pragma warning restore CA1861
     }
 
     [TestMethod]
     public void TestUtf32()
     {
+#pragma warning disable CA1861
         var data = new byte[12];
         data[0] = 0;
         data[1] = 1;
@@ -52,6 +55,7 @@ public class StringTests
                 str.Should().Be(new string(new[] { '\u0100', '\u0100' }));
             }
         }
+#pragma warning restore CA1861
     }
 
 
