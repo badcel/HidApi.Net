@@ -3,14 +3,14 @@ name: 'CI'
 on:
   workflow_dispatch:
     inputs:
-      publish:
+      publish_release:
         description: If this build should publish nuget packages
         required: true
         type: boolean
-      preview:
-        description: If this is a preview package
+      version_suffix:
+        description: Suffix of the version number. Can be used to create a preview package.
         required: true
-        type: boolean
+        type: string
   push:
     branches:
       - main
@@ -20,6 +20,8 @@ on:
 
 env:
   configuration: Release
+  publish_release: ${{ github.event.inputs.publish_release }}
+  version_suffix: ${{ github.event.inputs.version_suffix }}
 
 jobs:
   build:
@@ -27,7 +29,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ windows-latest, macos-latest, ubuntu-22.04 ]
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
     
     steps:
       - name: Checkout with submodules
@@ -45,7 +47,7 @@ jobs:
         working-directory: './src'
 
       - name: Verify code format
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        if: matrix.os == 'ubuntu-latest'
         run: dotnet format --no-restore --verify-no-changes
         working-directory: './src'
 
@@ -54,51 +56,40 @@ jobs:
         working-directory: './src'
 
       - name: Test Linux 64 bit
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get install libhidapi-hidraw0
           dotnet run -- --requireOsPlatform LINUX --require64bit
         working-directory: './src/HidApi.Net.Tester'
 
       - name: Test OSX 64 bit
-        if: ${{ matrix.os == 'macos-latest' }}
+        if: matrix.os == 'macos-latest'
         run: |
           brew install hidapi
           dotnet run -- --requireOsPlatform OSX --require64bit
         working-directory: './src/HidApi.Net.Tester'
 
       - name: Setup Windows 64 bit
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: matrix.os == 'windows-latest'
         uses: msys2/setup-msys2@v2
         with:
           path-type: inherit
+          update: true
           install: >-
             mingw-w64-x86_64-hidapi
 
       - name: Test Windows 64 bit
-        if: ${{ matrix.os == 'Windows-latest' }}
+        if: matrix.os == 'Windows-latest'
         run: dotnet run -- --requireOsPlatform WINDOWS --require64bit
         shell: msys2 {0}
         working-directory: './src/HidApi.Net.Tester'
 
-      - name: Get current time
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
-        uses: josStorer/get-current-time@v2.1.1
-        id: current-time
-        with:
-          format: YYYYMMDD-HHmmss
-
-      - name: Pack preview version
-        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'true' && matrix.os == 'ubuntu-22.04'}}
-        run: dotnet pack HidApi.Net/HidApi.Net.csproj --no-build --nologo -c ${{ env.configuration }} --version-suffix "CI-${{ steps.current-time.outputs.formattedTime }}" -o ../Nuget
-        working-directory: './src'
-
       - name: Pack release version
-        if: ${{ github.event.inputs.publish == 'true' && github.event.inputs.preview == 'false' && matrix.os == 'ubuntu-22.04' }}
-        run: dotnet pack HidApi.Net/HidApi.Net.csproj --no-build --nologo -c ${{ env.configuration }} -o ../Nuget
+        if: env.publish_release == 'true' && matrix.os == 'ubuntu-latest'
+        run: dotnet pack HidApi.Net/HidApi.Net.csproj --no-build --nologo -c ${{ env.configuration }} --version-suffix ${{ env.version_suffix }} -o ../Nuget
         working-directory: './src'
 
       - name: Publish to nuget org
-        if: ${{ github.event.inputs.publish == 'true' && matrix.os == 'ubuntu-22.04' }}
+        if: env.publish_release == 'true' && matrix.os == 'ubuntu-latest'
         run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s nuget.org
         working-directory: './Nuget'
