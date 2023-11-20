@@ -4,7 +4,7 @@ namespace HidApi;
 /// Represents a HID device.
 /// </summary>
 /// <remarks>Call Dispose to free all unmanaged resources.</remarks>
-public class Device : IDisposable
+public sealed class Device : IDisposable
 {
     private readonly DeviceSafeHandle handle;
 
