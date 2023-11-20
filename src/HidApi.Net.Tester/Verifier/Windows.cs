@@ -1,11 +1,11 @@
 namespace HidApi.Net.Tester;
 
-public class Windows : HidApiVerifier
+public class Windows : IHidApiVerifier
 {
     public bool VerifyCharPointer()
     {
         var version = Hid.VersionString();
-        if (version.Split('.').Length == 3 && version.StartsWith("0."))
+        if (version.Split('.').Length == 3 && version.StartsWith("0.", StringComparison.InvariantCulture))
             return true;
 
         Console.WriteLine("Error: Could not verify HIDAPI. String seems to have incorrect format.");

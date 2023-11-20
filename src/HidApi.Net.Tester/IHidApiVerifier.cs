@@ -1,6 +1,6 @@
 namespace HidApi.Net.Tester;
 
-public interface HidApiVerifier
+public interface IHidApiVerifier
 {
     bool VerifyCharPointer();
     bool VerifyWCharPointer();

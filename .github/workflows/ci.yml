@@ -22,6 +22,7 @@ env:
   configuration: Release
   publish_release: ${{ github.event.inputs.publish_release }}
   version_suffix: ${{ github.event.inputs.version_suffix }}
+  tester_framework: net8.0
 
 jobs:
   build:
@@ -40,8 +41,11 @@ jobs:
       - name: Prepare .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
-
+          dotnet-version: |
+            6.0.x
+            7.0.x
+            8.0.x
+      
       - name: Build solution
         run: dotnet build --nologo -c ${{ env.configuration }}
         working-directory: './src'
@@ -59,14 +63,14 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get install libhidapi-hidraw0
-          dotnet run -- --requireOsPlatform LINUX --require64bit
+          dotnet run --framework ${{ env.tester_framework }} -- --requireOsPlatform LINUX --require64bit
         working-directory: './src/HidApi.Net.Tester'
 
       - name: Test OSX 64 bit
         if: matrix.os == 'macos-latest'
         run: |
           brew install hidapi
-          dotnet run -- --requireOsPlatform OSX --require64bit
+          dotnet run --framework ${{ env.tester_framework }} -- --requireOsPlatform OSX --require64bit
         working-directory: './src/HidApi.Net.Tester'
 
       - name: Setup Windows 64 bit
@@ -80,7 +84,7 @@ jobs:
 
       - name: Test Windows 64 bit
         if: matrix.os == 'Windows-latest'
-        run: dotnet run -- --requireOsPlatform WINDOWS --require64bit
+        run: dotnet run --framework ${{ env.tester_framework }} -- --requireOsPlatform WINDOWS --require64bit
         shell: msys2 {0}
         working-directory: './src/HidApi.Net.Tester'
 
