@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace HidApi;
 
-internal static class NativeMethods
+internal static partial class NativeMethods
 {
     private const string Library = "HidApi";
     private static IntPtr libraryHandle = IntPtr.Zero;
@@ -28,14 +28,11 @@ internal static class NativeMethods
         throw new DllNotFoundException($"Could not find hidapi library tried: {string.Join(", ", NativeHidApiLibrary.GetNames())}");
     }
 
-    public static DeviceSafeHandle Open(ushort vendorId, ushort productId, NullTerminatedString serialNumber)
+    public static unsafe DeviceSafeHandle Open(ushort vendorId, ushort productId, NullTerminatedString serialNumber)
     {
-        unsafe
+        fixed (byte* ptr = serialNumber)
         {
-            fixed (byte* ptr = serialNumber)
-            {
-                return Open(vendorId, productId, ptr);
-            }
+            return Open(vendorId, productId, ptr);
         }
     }
 
@@ -94,76 +91,75 @@ internal static class NativeMethods
         return GetReportDescriptor(device, ref MemoryMarshal.GetReference(buf), (nuint) buf.Length);
     }
 
-    [DllImport(Library, EntryPoint = "hid_init")]
-    public static extern int Init();
+#if NET7_0_OR_GREATER
 
-    [DllImport(Library, EntryPoint = "hid_exit")]
-    public static extern int Exit();
+    [LibraryImport(Library, EntryPoint = "hid_init")]
+    public static partial int Init();
 
-    [DllImport(Library, EntryPoint = "hid_enumerate")]
-    public static extern unsafe NativeDeviceInfo* Enumerate(ushort vendorId, ushort productId);
+    [LibraryImport(Library, EntryPoint = "hid_exit")]
+    public static partial int Exit();
 
-    [DllImport(Library, EntryPoint = "hid_free_enumeration")]
-    public static extern unsafe void FreeEnumeration(NativeDeviceInfo* devices);
+    [LibraryImport(Library, EntryPoint = "hid_enumerate")]
+    public static unsafe partial NativeDeviceInfo* Enumerate(ushort vendorId, ushort productId);
 
-    [DllImport(Library, EntryPoint = "hid_open")]
-    private static extern unsafe DeviceSafeHandle Open(ushort vendorId, ushort productId, byte* serialNumber);
+    [LibraryImport(Library, EntryPoint = "hid_free_enumeration")]
+    public static unsafe partial void FreeEnumeration(NativeDeviceInfo* devices);
 
-    [DllImport(Library,
-        EntryPoint = "hid_open_path",
-        CharSet = CharSet.Ansi,
-        BestFitMapping = false,
-        ThrowOnUnmappableChar = true)]
-    public static extern DeviceSafeHandle OpenPath([MarshalAs(UnmanagedType.LPStr)] string path);
+    [LibraryImport(Library, EntryPoint = "hid_open")]
+    private static unsafe partial DeviceSafeHandle Open(ushort vendorId, ushort productId, byte* serialNumber);
 
-    [DllImport(Library, EntryPoint = "hid_write")]
-    private static extern int Write(DeviceSafeHandle device, ref byte data, nuint length);
+    [LibraryImport(Library, EntryPoint = "hid_open_path")]
+    public static partial DeviceSafeHandle OpenPath([MarshalAs(UnmanagedType.LPStr)] string path);
 
-    [DllImport(Library, EntryPoint = "hid_read_timeout")]
-    private static extern int ReadTimeOut(DeviceSafeHandle device, ref byte data, nuint length, int milliseconds);
+    [LibraryImport(Library, EntryPoint = "hid_write")]
+    private static partial int Write(DeviceSafeHandle device, ref byte data, nuint length);
 
-    [DllImport(Library, EntryPoint = "hid_read")]
-    private static extern int Read(DeviceSafeHandle device, ref byte data, nuint length);
+    [LibraryImport(Library, EntryPoint = "hid_read_timeout")]
+    private static partial int ReadTimeOut(DeviceSafeHandle device, ref byte data, nuint length, int milliseconds);
 
-    [DllImport(Library, EntryPoint = "hid_set_nonblocking")]
-    public static extern int SetNonBlocking(DeviceSafeHandle device, int nonBlock);
+    [LibraryImport(Library, EntryPoint = "hid_read")]
+    private static partial int Read(DeviceSafeHandle device, ref byte data, nuint length);
 
-    [DllImport(Library, EntryPoint = "hid_send_feature_report")]
-    private static extern int SendFeatureReport(DeviceSafeHandle device, ref byte data, nuint length);
+    [LibraryImport(Library, EntryPoint = "hid_set_nonblocking")]
+    public static partial int SetNonBlocking(DeviceSafeHandle device, int nonBlock);
 
-    [DllImport(Library, EntryPoint = "hid_get_feature_report")]
-    private static extern int GetFeatureReport(DeviceSafeHandle device, ref byte data, nuint length);
+    [LibraryImport(Library, EntryPoint = "hid_send_feature_report")]
+    private static partial int SendFeatureReport(DeviceSafeHandle device, ref byte data, nuint length);
 
-    [DllImport(Library, EntryPoint = "hid_get_input_report")]
-    private static extern int GetInputReport(DeviceSafeHandle device, ref byte data, nuint length);
+    [LibraryImport(Library, EntryPoint = "hid_get_feature_report")]
+    private static partial int GetFeatureReport(DeviceSafeHandle device, ref byte data, nuint length);
 
-    [DllImport(Library, EntryPoint = "hid_close")]
-    public static extern void Close(IntPtr device);
+    [LibraryImport(Library, EntryPoint = "hid_get_input_report")]
+    private static partial int GetInputReport(DeviceSafeHandle device, ref byte data, nuint length);
 
-    [DllImport(Library, EntryPoint = "hid_get_manufacturer_string")]
-    private static extern int GetManufacturerString(DeviceSafeHandle device, ref byte buffer, nuint maxLength);
+    [LibraryImport(Library, EntryPoint = "hid_close")]
+    public static partial void Close(IntPtr device);
 
-    [DllImport(Library, EntryPoint = "hid_get_product_string")]
-    private static extern int GetProductString(DeviceSafeHandle device, ref byte buffer, nuint maxLength);
+    [LibraryImport(Library, EntryPoint = "hid_get_manufacturer_string")]
+    private static partial int GetManufacturerString(DeviceSafeHandle device, ref byte buffer, nuint maxLength);
 
-    [DllImport(Library, EntryPoint = "hid_get_serial_number_string")]
-    private static extern int GetSerialNumberString(DeviceSafeHandle device, ref byte buffer, nuint maxLength);
+    [LibraryImport(Library, EntryPoint = "hid_get_product_string")]
+    private static partial int GetProductString(DeviceSafeHandle device, ref byte buffer, nuint maxLength);
 
-    [DllImport(Library, EntryPoint = "hid_get_device_info")]
-    public static extern unsafe NativeDeviceInfo* GetDeviceInfo(DeviceSafeHandle device);
+    [LibraryImport(Library, EntryPoint = "hid_get_serial_number_string")]
+    private static partial int GetSerialNumberString(DeviceSafeHandle device, ref byte buffer, nuint maxLength);
 
-    [DllImport(Library, EntryPoint = "hid_get_indexed_string")]
-    private static extern int GetIndexedString(DeviceSafeHandle device, int stringIndex, ref byte buffer, nuint maxLength);
+    [LibraryImport(Library, EntryPoint = "hid_get_device_info")]
+    public static unsafe partial NativeDeviceInfo* GetDeviceInfo(DeviceSafeHandle device);
 
-    [DllImport(Library, EntryPoint = "hid_get_report_descriptor")]
-    private static extern int GetReportDescriptor(DeviceSafeHandle device, ref byte buf, nuint bufSize);
+    [LibraryImport(Library, EntryPoint = "hid_get_indexed_string")]
+    private static partial int GetIndexedString(DeviceSafeHandle device, int stringIndex, ref byte buffer, nuint maxLength);
 
-    [DllImport(Library, EntryPoint = "hid_error")]
-    public static extern unsafe byte* Error(DeviceSafeHandle device);
+    [LibraryImport(Library, EntryPoint = "hid_get_report_descriptor")]
+    private static partial int GetReportDescriptor(DeviceSafeHandle device, ref byte buf, nuint bufSize);
 
-    [DllImport(Library, EntryPoint = "hid_version")]
-    public static extern ref ApiVersion Version();
+    [LibraryImport(Library, EntryPoint = "hid_error")]
+    public static unsafe partial byte* Error(DeviceSafeHandle device);
 
-    [DllImport(Library, EntryPoint = "hid_version_str")]
-    public static extern IntPtr VersionString();
+    [LibraryImport(Library, EntryPoint = "hid_version")]
+    public static unsafe partial ApiVersion* Version();
+
+    [LibraryImport(Library, EntryPoint = "hid_version_str")]
+    public static partial IntPtr VersionString();
+#endif
 }

@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace HidApi;
@@ -59,6 +60,9 @@ public static class Hid
     /// <remarks>Available since hidapi 0.10.0</remarks>
     public static ref ApiVersion Version()
     {
-        return ref NativeMethods.Version();
+        unsafe
+        {
+            return ref Unsafe.AsRef<ApiVersion>(NativeMethods.Version());
+        }
     }
 }
