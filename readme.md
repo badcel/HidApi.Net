@@ -1,7 +1,7 @@
 # HidApi.Net
 [![Build Status](https://img.shields.io/github/actions/workflow/status/badcel/HidApi.Net/ci.yml?branch=main)](https://github.com/badcel/HidApi.Net/actions/workflows/ci.yml)[![NuGet](https://img.shields.io/nuget/v/HidApi.Net)](https://www.nuget.org/packages/HidApi.Net/)[![License (MIT)](https://img.shields.io/github/license/badcel/HidApi.Net)](https://github.com/badcel/HidApi.Net/blob/main/license.txt)
 
-Welcome to HidApi.Net a modern .NET 6 cross platform C# binding for the C [HIDAPI] library. Supported platforms are Linux, OSX and Windows.
+Welcome to HidApi.Net a modern cross platform C# binding for the C [HIDAPI] library. Supported platforms are Linux, OSX and Windows.
 
 Supported HIDAPI version: Up to 0.14
 
@@ -28,6 +28,9 @@ Hid.Exit(); //Call at the end of your program
 
 ### Linux
 In order to access HID devices as an unprivileged user an udev rule must be installed on the host system. Please refer to the sample [udev file][udev] of the [HIDAPI] project.
+
+## Native AOT
+If the application targets at least .NET 8 the nuget package allows applications to be published as _Native AOT_ as itself is AOT compatible.
 
 ## Build
 To build the solution locally execute the following commands:
