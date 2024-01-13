@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace HidApi;
 
 /// <summary>
@@ -7,6 +9,7 @@ public class HidException : Exception
 {
     private HidException(string message) : base(message) { }
 
+    [StackTraceHidden]
     internal static void Throw(DeviceSafeHandle handle)
     {
         unsafe
