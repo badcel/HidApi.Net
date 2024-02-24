@@ -21,3 +21,6 @@ coverage.*
 # Visual Studio
 .vs/
 *.DotSettings.user
+
+#Docs
+_site/
