@@ -13,6 +13,7 @@ public sealed class Device : IDisposable
     /// </summary>
     /// <param name="vendorId">Vendor id of target device</param>
     /// <param name="productId">product id of target device</param>
+    /// <exception cref="HidException">Raised on failure</exception>
     public Device(ushort vendorId, ushort productId)
     {
         handle = NativeMethods.Open(vendorId, productId, NullTerminatedString.Empty);
@@ -27,6 +28,7 @@ public sealed class Device : IDisposable
     /// <param name="vendorId">Vendor id of target device</param>
     /// <param name="productId">Product id of target device</param>
     /// <param name="serialNumber">Serial number of target device</param>
+    /// <exception cref="HidException">Raised on failure</exception>
     public Device(ushort vendorId, ushort productId, string serialNumber)
     {
         handle = NativeMethods.Open(vendorId, productId, WCharT.CreateNullTerminatedString(serialNumber));
@@ -39,6 +41,7 @@ public sealed class Device : IDisposable
     /// Connects to a given device.
     /// </summary>
     /// <param name="path">Path to the device</param>
+    /// <exception cref="HidException">Raised on failure</exception>
     public Device(string path)
     {
         handle = NativeMethods.OpenPath(path);
@@ -51,6 +54,7 @@ public sealed class Device : IDisposable
     /// Write an output report to the device.
     /// </summary>
     /// <param name="data">Data to send. The first byte must contain the report id or 0x00 if the device only supports one report</param>
+    /// <exception cref="HidException">Raised on failure</exception>
     public void Write(ReadOnlySpan<byte> data)
     {
         var result = NativeMethods.Write(handle, data);
@@ -66,6 +70,7 @@ public sealed class Device : IDisposable
     /// <param name="milliseconds">timeout in milliseconds. -1 for blocking mode.</param>
     /// <returns>The received data of the HID device. If the timeout is exceeded an empty result is returned.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     public ReadOnlySpan<byte> ReadTimeout(int maxLength, int milliseconds)
     {
         if (maxLength < 0)
@@ -86,6 +91,7 @@ public sealed class Device : IDisposable
     /// <param name="maxLength">Max length of the expected data. The value can be greater than the actual report.</param>
     /// <returns>The received data of the HID device. If non blocking mode is enabled and no data is available an empty result will be returned.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     public ReadOnlySpan<byte> Read(int maxLength)
     {
         if (maxLength < 0)
@@ -105,6 +111,7 @@ public sealed class Device : IDisposable
     /// </summary>
     /// <param name="setNonBlocking">true: Enable non blocking mode.
     /// false: Disable non blocking mode.</param>
+    /// <exception cref="HidException">Raised on failure</exception>
     public void SetNonBlocking(bool setNonBlocking)
     {
         var result = NativeMethods.SetNonBlocking(handle, setNonBlocking ? 1 : 0);
@@ -117,6 +124,7 @@ public sealed class Device : IDisposable
     /// Sends a feature report to the device.
     /// </summary>
     /// <param name="data">The data which should be sent to the device. The first byte must contain the report id or 0x0 if the device does not use numbered reports.</param>
+    /// <exception cref="HidException">Raised on failure</exception>
     public void SendFeatureReport(ReadOnlySpan<byte> data)
     {
         var result = NativeMethods.SendFeatureReport(handle, data);
@@ -132,6 +140,7 @@ public sealed class Device : IDisposable
     /// <param name="maxLength">Max length of the expected data. The value can be greater than the actual report.</param>
     /// <returns>The received data of the HID device.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxLength is smaller than 1</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     public ReadOnlySpan<byte> GetFeatureReport(byte reportId, int maxLength)
     {
         if (maxLength < 1)
@@ -155,6 +164,7 @@ public sealed class Device : IDisposable
     /// <param name="maxLength">Max length of the expected data. The value can be greater than the actual report.</param>
     /// <returns>The received data of the HID device.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxLength is smaller than 1</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     /// <remarks>Available since hidapi 0.10.0</remarks>
     public ReadOnlySpan<byte> GetInputReport(byte reportId, int maxLength)
     {
@@ -173,11 +183,12 @@ public sealed class Device : IDisposable
     }
 
     /// <summary>
-    /// Returns the manufactuerer.
+    /// Returns the manufacturer.
     /// </summary>
     /// <param name="maxLength">Max length of the returned manufacturer string</param>
     /// <returns>A string containing the name of the manufacturer</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     public string GetManufacturer(int maxLength = 128)
     {
         if (maxLength < 0)
@@ -198,6 +209,7 @@ public sealed class Device : IDisposable
     /// <param name="maxLength">Max length of the returned product string</param>
     /// <returns>A string containing the name of the product</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     public string GetProduct(int maxLength = 128)
     {
         if (maxLength < 0)
@@ -218,6 +230,7 @@ public sealed class Device : IDisposable
     /// <param name="maxLength">Max length of the returned serial number string</param>
     /// <returns>A string containing the serial number</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     public string GetSerialNumber(int maxLength = 128)
     {
         if (maxLength < 0)
@@ -236,6 +249,7 @@ public sealed class Device : IDisposable
     /// Returns the device info for a device.
     /// </summary>
     /// <returns><see cref="DeviceInfo"/></returns>
+    /// <exception cref="HidException">Raised on failure</exception>
     /// <remarks>Available since hidapi 0.13.0</remarks>
     public DeviceInfo GetDeviceInfo()
     {
@@ -257,6 +271,7 @@ public sealed class Device : IDisposable
     /// <param name="maxLength">Max length of the string</param>
     /// <returns>The string at the given index.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     public string GetIndexedString(int stringIndex, int maxLength = 128)
     {
         if (maxLength < 0)
@@ -278,6 +293,7 @@ public sealed class Device : IDisposable
     /// <returns>The report descriptor</returns>
     /// <remarks>Available since hidapi 0.14.0</remarks>
     /// <exception cref="ArgumentOutOfRangeException">Raised if bufLength is less than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
     public ReadOnlySpan<byte> GetReportDescriptor(int bufSize = 4096)
     {
         if (bufSize < 0)
