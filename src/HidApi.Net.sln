@@ -11,11 +11,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		..\.github\dependabot.yml = ..\.github\dependabot.yml
 		Directory.Build.props = Directory.Build.props
 		..\readme.md = ..\readme.md
+		..\.github\workflows\documentation.yml = ..\.github\workflows\documentation.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HidApi.Net.Tester", "HidApi.Net.Tester\HidApi.Net.Tester.csproj", "{D7FE837A-D24D-4D56-B538-CCC6968DDF1E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HidApi.Net.Tests", "HidApi.Net.Tests\HidApi.Net.Tests.csproj", "{3F7CF192-630B-4981-963A-6BA97F8C65EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{5990F7E6-C6E7-41AB-BA83-5A17AAC91352}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\docfx.json = ..\docs\docfx.json
+		..\docs\toc.yml = ..\docs\toc.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,5 +42,8 @@ Global
 		{3F7CF192-630B-4981-963A-6BA97F8C65EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F7CF192-630B-4981-963A-6BA97F8C65EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F7CF192-630B-4981-963A-6BA97F8C65EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5990F7E6-C6E7-41AB-BA83-5A17AAC91352} = {289DF505-DAF0-4DEC-B19F-CD7E3B5737ED}
 	EndGlobalSection
 EndGlobal
