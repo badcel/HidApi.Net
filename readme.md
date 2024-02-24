@@ -8,6 +8,8 @@ Supported HIDAPI version: Up to 0.14
 ## Use
 To use the library please reference the [nuget package](https://www.nuget.org/packages/HidApi.Net/) in your project. Additionally it is required to either ensure that [HIDAPI] is available on the host system or is distributed as part of your application.
 
+To get an overview of the API please refer to the [API documentation][api].
+
 ### Code sample
 You can use the [Hid class](https://github.com/badcel/HidApi.Net/blob/main/src/HidApi.Net/Hid.cs) to enumerate over devices or directly use the [device class](https://github.com/badcel/HidApi.Net/blob/main/src/HidApi.Net/Device.cs) to connect to a known device:
 
@@ -47,3 +49,4 @@ HidApi.Net is licensed under the terms of the MIT-License. Please see the [licen
 [HIDAPI]:https://github.com/libusb/hidapi
 [udev]:https://github.com/libusb/hidapi/blob/master/udev/69-hid.rules
 [license]:https://raw.githubusercontent.com/badcel/HidApi.Net/main/license.txt
+[api]:https://badcel.github.io/HidApi.Net/api/HidApi.html
