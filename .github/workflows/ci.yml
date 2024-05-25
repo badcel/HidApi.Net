@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ windows-latest, macos-latest, ubuntu-latest ]
+        os: [ windows-latest, macos-12, ubuntu-latest ]
     
     steps:
       - name: Checkout with submodules
@@ -67,7 +67,7 @@ jobs:
         working-directory: './src/HidApi.Net.Tester'
 
       - name: Test OSX 64 bit
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-12'
         run: |
           brew install hidapi
           dotnet run --framework ${{ env.tester_framework }} -- --requireOsPlatform OSX --require64bit
