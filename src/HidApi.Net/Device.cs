@@ -1,3 +1,5 @@
+using WCharT;
+
 namespace HidApi;
 
 /// <summary>
@@ -16,7 +18,7 @@ public sealed class Device : IDisposable
     /// <exception cref="HidException">Raised on failure</exception>
     public Device(ushort vendorId, ushort productId)
     {
-        handle = NativeMethods.Open(vendorId, productId, NullTerminatedString.Empty);
+        handle = NativeMethods.Open(vendorId, productId, new WCharTString(string.Empty));
 
         if (handle.IsInvalid)
             HidException.Throw(handle);
@@ -31,7 +33,7 @@ public sealed class Device : IDisposable
     /// <exception cref="HidException">Raised on failure</exception>
     public Device(ushort vendorId, ushort productId, string serialNumber)
     {
-        handle = NativeMethods.Open(vendorId, productId, WCharT.CreateNullTerminatedString(serialNumber));
+        handle = NativeMethods.Open(vendorId, productId, new WCharTString(serialNumber));
 
         if (handle.IsInvalid)
             HidException.Throw(handle);
@@ -194,13 +196,13 @@ public sealed class Device : IDisposable
         if (maxLength < 0)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
-        ReadOnlySpan<byte> buffer = WCharT.CreateBuffer(maxLength);
+        var buffer = new WCharTString(maxLength);
         var result = NativeMethods.GetManufacturerString(handle, buffer);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return WCharT.GetString(buffer);
+        return buffer.GetString();
     }
 
     /// <summary>
@@ -215,13 +217,13 @@ public sealed class Device : IDisposable
         if (maxLength < 0)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
-        ReadOnlySpan<byte> buffer = WCharT.CreateBuffer(maxLength);
+        var buffer = new WCharTString(maxLength);
         var result = NativeMethods.GetProductString(handle, buffer);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return WCharT.GetString(buffer);
+        return buffer.GetString();
     }
 
     /// <summary>
@@ -236,13 +238,13 @@ public sealed class Device : IDisposable
         if (maxLength < 0)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
-        ReadOnlySpan<byte> buffer = WCharT.CreateBuffer(maxLength);
+        var buffer = new WCharTString(maxLength);
         var result = NativeMethods.GetSerialNumberString(handle, buffer);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return WCharT.GetString(buffer);
+        return buffer.GetString();
     }
 
     /// <summary>
@@ -277,13 +279,13 @@ public sealed class Device : IDisposable
         if (maxLength < 0)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
-        ReadOnlySpan<byte> buffer = WCharT.CreateBuffer(maxLength);
+        var buffer = new WCharTString(maxLength);
         var result = NativeMethods.GetIndexedString(handle, stringIndex, buffer);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return WCharT.GetString(buffer);
+        return buffer.GetString();
     }
 
     /// <summary>

@@ -31,6 +31,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'"/>
+    <PackageReference Include="WCharT.Net" Version="0.1.1" />
+    
     <InternalsVisibleTo Include="$(AssemblyName).Tester" />
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
     <None Include="../../readme.md" Pack="true" PackagePath="/" />

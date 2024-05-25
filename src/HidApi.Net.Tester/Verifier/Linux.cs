@@ -1,3 +1,5 @@
+using WCharT;
+
 namespace HidApi.Net.Tester;
 
 public class Linux : IHidApiVerifier
@@ -19,7 +21,7 @@ public class Linux : IHidApiVerifier
         unsafe
         {
             var ptr = NativeMethods.Error(DeviceSafeHandle.Null);
-            var result = WCharT.GetString(ptr);
+            var result = new WCharTString(ptr).GetString();
             if (result == Expected)
                 return true;
         }

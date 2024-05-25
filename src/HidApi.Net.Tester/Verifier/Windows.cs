@@ -1,3 +1,5 @@
+using WCharT;
+
 namespace HidApi.Net.Tester;
 
 public class Windows : IHidApiVerifier
@@ -20,7 +22,7 @@ public class Windows : IHidApiVerifier
         unsafe
         {
             var ptr = NativeMethods.Error(DeviceSafeHandle.Null);
-            result = WCharT.GetString(ptr);
+            result = new WCharTString(ptr).GetString();
             if (result == Expected)
                 return true;
         }
