@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
+using WCharT;
 
 namespace HidApi;
 
@@ -28,7 +29,7 @@ internal static partial class NativeMethods
         throw new DllNotFoundException($"Could not find hidapi library tried: {string.Join(", ", NativeHidApiLibrary.GetNames())}");
     }
 
-    public static unsafe DeviceSafeHandle Open(ushort vendorId, ushort productId, NullTerminatedString serialNumber)
+    public static unsafe DeviceSafeHandle Open(ushort vendorId, ushort productId, WCharTString serialNumber)
     {
         fixed (byte* ptr = serialNumber)
         {

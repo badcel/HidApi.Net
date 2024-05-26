@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using WCharT;
 
 namespace HidApi;
 
@@ -45,10 +46,10 @@ public record DeviceInfo(
             Path: Marshal.PtrToStringAnsi((IntPtr) nativeDeviceInfo->Path) ?? string.Empty
             , VendorId: nativeDeviceInfo->VendorId
             , ProductId: nativeDeviceInfo->ProductId
-            , SerialNumber: WCharT.GetString(nativeDeviceInfo->SerialNumber)
+            , SerialNumber: new WCharTString(nativeDeviceInfo->SerialNumber).GetString()
             , ReleaseNumber: nativeDeviceInfo->ReleaseNumber
-            , ManufacturerString: WCharT.GetString(nativeDeviceInfo->ManufacturerString)
-            , ProductString: WCharT.GetString(nativeDeviceInfo->ProductString)
+            , ManufacturerString: new WCharTString(nativeDeviceInfo->ManufacturerString).GetString()
+            , ProductString: new WCharTString(nativeDeviceInfo->ProductString).GetString()
             , UsagePage: nativeDeviceInfo->UsagePage
             , Usage: nativeDeviceInfo->Usage
             , InterfaceNumber: nativeDeviceInfo->InterfaceNumber

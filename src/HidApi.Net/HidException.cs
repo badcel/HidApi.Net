@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using WCharT;
 
 namespace HidApi;
 
@@ -15,7 +16,7 @@ public class HidException : Exception
         unsafe
         {
             var ptr = NativeMethods.Error(handle);
-            throw new HidException(WCharT.GetString(ptr));
+            throw new HidException(new WCharTString(ptr).GetString());
         }
     }
 }
