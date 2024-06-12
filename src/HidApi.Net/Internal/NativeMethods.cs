@@ -52,24 +52,24 @@ internal static partial class NativeMethods
         return Read(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
     }
 
-    public static int GetManufacturerString(DeviceSafeHandle device, ReadOnlySpan<byte> buffer)
+    public static int GetManufacturerString(DeviceSafeHandle device, ReadOnlySpan<byte> buffer, int maxLength)
     {
-        return GetManufacturerString(device, ref MemoryMarshal.GetReference(buffer), (nuint) buffer.Length);
+        return GetManufacturerString(device, ref MemoryMarshal.GetReference(buffer), (nuint) maxLength);
     }
 
-    public static int GetProductString(DeviceSafeHandle device, ReadOnlySpan<byte> buffer)
+    public static int GetProductString(DeviceSafeHandle device, ReadOnlySpan<byte> buffer, int maxLength)
     {
-        return GetProductString(device, ref MemoryMarshal.GetReference(buffer), (nuint) buffer.Length);
+        return GetProductString(device, ref MemoryMarshal.GetReference(buffer), (nuint) maxLength);
     }
 
-    public static int GetSerialNumberString(DeviceSafeHandle device, ReadOnlySpan<byte> buffer)
+    public static int GetSerialNumberString(DeviceSafeHandle device, ReadOnlySpan<byte> buffer, int maxLength)
     {
-        return GetSerialNumberString(device, ref MemoryMarshal.GetReference(buffer), (nuint) buffer.Length);
+        return GetSerialNumberString(device, ref MemoryMarshal.GetReference(buffer), (nuint) maxLength);
     }
 
-    public static int GetIndexedString(DeviceSafeHandle device, int index, ReadOnlySpan<byte> buffer)
+    public static int GetIndexedString(DeviceSafeHandle device, int index, ReadOnlySpan<byte> buffer, int maxLength)
     {
-        return GetIndexedString(device, index, ref MemoryMarshal.GetReference(buffer), (nuint) buffer.Length);
+        return GetIndexedString(device, index, ref MemoryMarshal.GetReference(buffer), (nuint) maxLength);
     }
 
     public static int SendFeatureReport(DeviceSafeHandle device, ReadOnlySpan<byte> data)

@@ -197,7 +197,7 @@ public sealed class Device : IDisposable
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
         var buffer = new WCharTString(maxLength);
-        var result = NativeMethods.GetManufacturerString(handle, buffer);
+        var result = NativeMethods.GetManufacturerString(handle, buffer, maxLength);
 
         if (result == -1)
             HidException.Throw(handle);
@@ -218,7 +218,7 @@ public sealed class Device : IDisposable
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
         var buffer = new WCharTString(maxLength);
-        var result = NativeMethods.GetProductString(handle, buffer);
+        var result = NativeMethods.GetProductString(handle, buffer, maxLength);
 
         if (result == -1)
             HidException.Throw(handle);
@@ -239,7 +239,7 @@ public sealed class Device : IDisposable
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
         var buffer = new WCharTString(maxLength);
-        var result = NativeMethods.GetSerialNumberString(handle, buffer);
+        var result = NativeMethods.GetSerialNumberString(handle, buffer, maxLength);
 
         if (result == -1)
             HidException.Throw(handle);
@@ -280,7 +280,7 @@ public sealed class Device : IDisposable
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
         var buffer = new WCharTString(maxLength);
-        var result = NativeMethods.GetIndexedString(handle, stringIndex, buffer);
+        var result = NativeMethods.GetIndexedString(handle, stringIndex, buffer, maxLength);
 
         if (result == -1)
             HidException.Throw(handle);
