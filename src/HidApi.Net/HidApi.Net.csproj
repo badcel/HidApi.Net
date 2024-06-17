@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
 
     <RootNamespace>HidApi</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
