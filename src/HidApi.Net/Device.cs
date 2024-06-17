@@ -91,7 +91,7 @@ public sealed class Device : IDisposable
     /// Returns an input report.
     /// </summary>
     /// <param name="maxLength">Max length of the expected data. The value can be greater than the actual report.</param>
-    /// <returns>The received data of the HID device. If non blocking mode is enabled and no data is available an empty result will be returned.</returns>
+    /// <returns>The received data of the HID device. If non-blocking mode is enabled and no data is available an empty result will be returned.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
     /// <exception cref="HidException">Raised on failure</exception>
     public ReadOnlySpan<byte> Read(int maxLength)
@@ -188,63 +188,72 @@ public sealed class Device : IDisposable
     /// Returns the manufacturer.
     /// </summary>
     /// <param name="maxLength">Max length of the returned manufacturer string</param>
-    /// <returns>A string containing the name of the manufacturer</returns>
+    /// <returns>A string containing the name of the manufacturer. The length is limited to <paramref name="maxLength" /> characters.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
     /// <exception cref="HidException">Raised on failure</exception>
+    /// <exception cref="OverflowException">If the requested string length is too large to be created by the dotnet runtime.</exception>
     public string GetManufacturer(int maxLength = 128)
     {
         if (maxLength < 0)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
+        checked { maxLength += 1; } //Increase maxLength by one to care for null termination character
+
         var buffer = new WCharTString(maxLength);
-        var result = NativeMethods.GetManufacturerString(handle, buffer);
+        var result = NativeMethods.GetManufacturerString(handle, buffer, maxLength);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return buffer.GetString();
+        return buffer.GetString().TrimEnd((char) 0);
     }
 
     /// <summary>
     /// Returns the product.
     /// </summary>
     /// <param name="maxLength">Max length of the returned product string</param>
-    /// <returns>A string containing the name of the product</returns>
+    /// <returns>A string containing the name of the product. The length is limited to <paramref name="maxLength" /> characters.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
     /// <exception cref="HidException">Raised on failure</exception>
+    /// <exception cref="OverflowException">If the requested string length is too large to be created by the dotnet runtime.</exception>
     public string GetProduct(int maxLength = 128)
     {
         if (maxLength < 0)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
+        checked { maxLength += 1; } //Increase maxLength by one to care for null termination character
+
         var buffer = new WCharTString(maxLength);
-        var result = NativeMethods.GetProductString(handle, buffer);
+        var result = NativeMethods.GetProductString(handle, buffer, maxLength);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return buffer.GetString();
+        return buffer.GetString().TrimEnd((char) 0);
     }
 
     /// <summary>
     /// Returns the serial number.
     /// </summary>
     /// <param name="maxLength">Max length of the returned serial number string</param>
-    /// <returns>A string containing the serial number</returns>
+    /// <returns>A string containing the serial number. The length is limited to <paramref name="maxLength" /> characters.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
     /// <exception cref="HidException">Raised on failure</exception>
+    /// <exception cref="OverflowException">If the requested string length is too large to be created by the dotnet runtime.</exception>
     public string GetSerialNumber(int maxLength = 128)
     {
         if (maxLength < 0)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
+        checked { maxLength += 1; } //Increase maxLength by one to care for null termination character
+
         var buffer = new WCharTString(maxLength);
-        var result = NativeMethods.GetSerialNumberString(handle, buffer);
+        var result = NativeMethods.GetSerialNumberString(handle, buffer, maxLength);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return buffer.GetString();
+        return buffer.GetString().TrimEnd((char) 0);
     }
 
     /// <summary>
@@ -271,21 +280,24 @@ public sealed class Device : IDisposable
     /// </summary>
     /// <param name="stringIndex">The index of the string</param>
     /// <param name="maxLength">Max length of the string</param>
-    /// <returns>The string at the given index.</returns>
+    /// <returns>The string at the given index. The length is limited to <paramref name="maxLength" /> characters.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
     /// <exception cref="HidException">Raised on failure</exception>
+    /// <exception cref="OverflowException">If the requested string length is too large to be created by the dotnet runtime.</exception>
     public string GetIndexedString(int stringIndex, int maxLength = 128)
     {
         if (maxLength < 0)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
 
+        checked { maxLength += 1; } //Increase maxLength by one to care for null termination character
+
         var buffer = new WCharTString(maxLength);
-        var result = NativeMethods.GetIndexedString(handle, stringIndex, buffer);
+        var result = NativeMethods.GetIndexedString(handle, stringIndex, buffer, maxLength);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return buffer.GetString();
+        return buffer.GetString().TrimEnd((char) 0);
     }
 
     /// <summary>
