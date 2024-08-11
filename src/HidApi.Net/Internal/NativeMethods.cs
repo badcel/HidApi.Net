@@ -42,12 +42,12 @@ internal static partial class NativeMethods
         return Write(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
     }
 
-    public static int ReadTimeOut(DeviceSafeHandle device, ReadOnlySpan<byte> data, int milliseconds)
+    public static int ReadTimeOut(DeviceSafeHandle device, Span<byte> data, int milliseconds)
     {
         return ReadTimeOut(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length, milliseconds);
     }
 
-    public static int Read(DeviceSafeHandle device, ReadOnlySpan<byte> data)
+    public static int Read(DeviceSafeHandle device, Span<byte> data)
     {
         return Read(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
     }
