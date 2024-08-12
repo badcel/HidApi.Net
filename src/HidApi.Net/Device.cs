@@ -68,44 +68,34 @@ public sealed class Device : IDisposable
     /// <summary>
     /// Returns an input report.
     /// </summary>
-    /// <param name="maxLength">Max length of the expected data. The value can be greater than the actual report.</param>
+    /// <param name="buffer">Buffer to write the data into</param>
     /// <param name="milliseconds">timeout in milliseconds. -1 for blocking mode.</param>
-    /// <returns>The received data of the HID device. If the timeout is exceeded an empty result is returned.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <returns>The length of the received data in bytes. If the timeout is exceeded 0 is returned.</returns>
     /// <exception cref="HidException">Raised on failure</exception>
-    public ReadOnlySpan<byte> ReadTimeout(int maxLength, int milliseconds)
+    public int ReadTimeout(Span<byte> buffer, int milliseconds)
     {
-        if (maxLength < 0)
-            throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
-
-        ReadOnlySpan<byte> data = new byte[maxLength];
-        var result = NativeMethods.ReadTimeOut(handle, data, milliseconds);
+        var result = NativeMethods.ReadTimeOut(handle, buffer, milliseconds);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return data[..result];
+        return result;
     }
 
     /// <summary>
     /// Returns an input report.
     /// </summary>
-    /// <param name="maxLength">Max length of the expected data. The value can be greater than the actual report.</param>
-    /// <returns>The received data of the HID device. If non-blocking mode is enabled and no data is available an empty result will be returned.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <param name="buffer">Buffer to write the data into</param>
+    /// <returns>The length of the received data in bytes. If non-blocking mode is enabled and no data is available 0 will be returned.</returns>
     /// <exception cref="HidException">Raised on failure</exception>
-    public ReadOnlySpan<byte> Read(int maxLength)
+    public int Read(Span<byte> buffer)
     {
-        if (maxLength < 0)
-            throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
-
-        ReadOnlySpan<byte> data = new byte[maxLength];
-        var result = NativeMethods.Read(handle, data);
+        var result = NativeMethods.Read(handle, buffer);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return data[..result];
+        return result;
     }
 
     /// <summary>
