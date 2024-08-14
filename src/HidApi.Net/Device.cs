@@ -138,15 +138,14 @@ public sealed class Device : IDisposable
         if (maxLength < 1)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a value greater than 1");
 
-        var data = new byte[maxLength];
+        var data = new Span<byte>(new byte[maxLength]);
         data[0] = reportId;
-        ReadOnlySpan<byte> spanData = data;
-        var result = NativeMethods.GetFeatureReport(handle, spanData);
+        var result = NativeMethods.GetFeatureReport(handle, data);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return spanData[..result];
+        return data[..result];
     }
 
     /// <summary>
@@ -163,15 +162,14 @@ public sealed class Device : IDisposable
         if (maxLength < 1)
             throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a value greater than 1");
 
-        var data = new byte[maxLength];
+        var data = new Span<byte>(new byte[maxLength]);
         data[0] = reportId;
-        ReadOnlySpan<byte> spanData = data;
-        var result = NativeMethods.GetInputReport(handle, spanData);
+        var result = NativeMethods.GetInputReport(handle, data);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return spanData[..result];
+        return data[..result];
     }
 
     /// <summary>
@@ -303,14 +301,13 @@ public sealed class Device : IDisposable
         if (bufSize < 0)
             throw new ArgumentOutOfRangeException(nameof(bufSize), bufSize, "Please provide a positive value");
 
-        var data = new byte[bufSize];
-        ReadOnlySpan<byte> spanData = data;
-        var result = NativeMethods.GetReportDescriptor(handle, spanData);
+        var data = new Span<byte>(new byte[bufSize]);
+        var result = NativeMethods.GetReportDescriptor(handle, data);
 
         if (result == -1)
             HidException.Throw(handle);
 
-        return spanData[..result];
+        return data[..result];
     }
 
     /// <summary>
