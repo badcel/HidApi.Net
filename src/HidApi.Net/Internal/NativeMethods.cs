@@ -77,17 +77,17 @@ internal static partial class NativeMethods
         return SendFeatureReport(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
     }
 
-    public static int GetFeatureReport(DeviceSafeHandle device, ReadOnlySpan<byte> data)
+    public static int GetFeatureReport(DeviceSafeHandle device, Span<byte> data)
     {
         return GetFeatureReport(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
     }
 
-    public static int GetInputReport(DeviceSafeHandle device, ReadOnlySpan<byte> data)
+    public static int GetInputReport(DeviceSafeHandle device, Span<byte> data)
     {
         return GetInputReport(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
     }
 
-    public static int GetReportDescriptor(DeviceSafeHandle device, ReadOnlySpan<byte> buf)
+    public static int GetReportDescriptor(DeviceSafeHandle device, Span<byte> buf)
     {
         return GetReportDescriptor(device, ref MemoryMarshal.GetReference(buf), (nuint) buf.Length);
     }
