@@ -68,6 +68,25 @@ public sealed class Device : IDisposable
     /// <summary>
     /// Returns an input report.
     /// </summary>
+    /// <param name="maxLength">Max length of the expected data. The value can be greater than the actual report.</param>
+    /// <param name="milliseconds">timeout in milliseconds. -1 for blocking mode.</param>
+    /// <returns>The received data of the HID device. If the timeout is exceeded an empty result is returned.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
+    public ReadOnlySpan<byte> ReadTimeout(int maxLength, int milliseconds)
+    {
+        if (maxLength < 0)
+            throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
+
+        var buffer = new Span<byte>(new byte[maxLength]);
+        var bytesRead = ReadTimeout(buffer, milliseconds);
+
+        return buffer[..bytesRead];
+    }
+
+    /// <summary>
+    /// Returns an input report.
+    /// </summary>
     /// <param name="buffer">Buffer to write the data into</param>
     /// <param name="milliseconds">timeout in milliseconds. -1 for blocking mode.</param>
     /// <returns>The length of the received data in bytes. If the timeout is exceeded 0 is returned.</returns>
@@ -80,6 +99,24 @@ public sealed class Device : IDisposable
             HidException.Throw(handle);
 
         return result;
+    }
+
+    /// <summary>
+    /// Returns an input report.
+    /// </summary>
+    /// <param name="maxLength">Max length of the expected data. The value can be greater than the actual report.</param>
+    /// <returns>The received data of the HID device. If non-blocking mode is enabled and no data is available an empty result will be returned.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Raised if maxlength is smaller than 0</exception>
+    /// <exception cref="HidException">Raised on failure</exception>
+    public ReadOnlySpan<byte> Read(int maxLength)
+    {
+        if (maxLength < 0)
+            throw new ArgumentOutOfRangeException(nameof(maxLength), maxLength, "Please provide a positive value");
+
+        var buffer = new Span<byte>(new byte[maxLength]);
+        var bytesRead = Read(buffer);
+
+        return buffer[..bytesRead];
     }
 
     /// <summary>
