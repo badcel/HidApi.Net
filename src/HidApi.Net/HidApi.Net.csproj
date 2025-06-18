@@ -19,9 +19,6 @@
 
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageTags>hid;usb;binding</PackageTags>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
   
@@ -30,7 +27,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" Condition="'$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'"/>
     <PackageReference Include="WCharT.Net" Version="0.1.2" />
     
     <InternalsVisibleTo Include="$(AssemblyName).Tester" />

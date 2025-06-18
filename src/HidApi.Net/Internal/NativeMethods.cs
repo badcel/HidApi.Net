@@ -92,8 +92,6 @@ internal static partial class NativeMethods
         return GetReportDescriptor(device, ref MemoryMarshal.GetReference(buf), (nuint) buf.Length);
     }
 
-#if NET7_0_OR_GREATER
-
     [LibraryImport(Library, EntryPoint = "hid_init")]
     public static partial int Init();
 
@@ -162,5 +160,4 @@ internal static partial class NativeMethods
 
     [LibraryImport(Library, EntryPoint = "hid_version_str")]
     public static partial IntPtr VersionString();
-#endif
 }
