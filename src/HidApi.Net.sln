@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		Directory.Build.props = Directory.Build.props
 		..\readme.md = ..\readme.md
 		..\.github\workflows\documentation.yml = ..\.github\workflows\documentation.yml
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HidApi.Net.Tester", "HidApi.Net.Tester\HidApi.Net.Tester.csproj", "{D7FE837A-D24D-4D56-B538-CCC6968DDF1E}"
