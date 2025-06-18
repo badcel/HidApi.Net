@@ -20,6 +20,9 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageTags>hid;usb;binding</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
+    
+    <!-- Define path to WChart.Net source code for local development -->
+    <WCharTSource />
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
@@ -27,7 +30,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WCharT.Net" Version="0.1.2" />
+    <ProjectReference Condition="'$(WCharTSource)' != ''" Include="$(WCharTSource)/src/WCharT.Net/WCharT.Net.csproj" />
+    <PackageReference Condition="'$(WCharTSource)' == ''" Include="WCharT.Net" />
     
     <InternalsVisibleTo Include="$(AssemblyName).Tester" />
     <None Include="../../readme.md" Pack="true" PackagePath="/" />
