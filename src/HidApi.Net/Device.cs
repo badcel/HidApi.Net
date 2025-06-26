@@ -96,7 +96,7 @@ public sealed class Device : IDisposable
         var result = NativeMethods.ReadTimeOut(handle, buffer, milliseconds);
 
         if (result == -1)
-            HidException.Throw(handle);
+            HidException.ThrowRead(handle);
 
         return result;
     }
@@ -130,7 +130,7 @@ public sealed class Device : IDisposable
         var result = NativeMethods.Read(handle, buffer);
 
         if (result == -1)
-            HidException.Throw(handle);
+            HidException.ThrowRead(handle);
 
         return result;
     }
@@ -183,6 +183,20 @@ public sealed class Device : IDisposable
             HidException.Throw(handle);
 
         return data[..result];
+    }
+
+    /// <summary>
+    /// Sends an output report over the control endpoint as a Set_Report transfer.
+    /// </summary>
+    /// <param name="data">The data which should be sent to the device. The first byte must contain the report id or 0x0 if the device does not use numbered reports.</param>
+    /// <exception cref="HidException">Raised on failure</exception>
+    /// <remarks>Available since hidapi 0.15.0</remarks>
+    public void SendOutputReport(ReadOnlySpan<byte> data)
+    {
+        var result = NativeMethods.SendOutputReport(handle, data);
+
+        if (result == -1)
+            HidException.Throw(handle);
     }
 
     /// <summary>

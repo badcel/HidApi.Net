@@ -19,4 +19,14 @@ public class HidException : Exception
             throw new HidException(new WCharTString(ptr).GetString());
         }
     }
+
+    [StackTraceHidden]
+    internal static void ThrowRead(DeviceSafeHandle handle)
+    {
+        unsafe
+        {
+            var ptr = NativeMethods.ReadError(handle);
+            throw new HidException(new WCharTString(ptr).GetString());
+        }
+    }
 }

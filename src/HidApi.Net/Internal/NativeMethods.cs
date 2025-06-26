@@ -82,6 +82,11 @@ internal static partial class NativeMethods
         return GetFeatureReport(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
     }
 
+    public static int SendOutputReport(DeviceSafeHandle device, ReadOnlySpan<byte> data)
+    {
+        return SendOutputReport(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
+    }
+
     public static int GetInputReport(DeviceSafeHandle device, Span<byte> data)
     {
         return GetInputReport(device, ref MemoryMarshal.GetReference(data), (nuint) data.Length);
@@ -128,6 +133,9 @@ internal static partial class NativeMethods
     [LibraryImport(Library, EntryPoint = "hid_get_feature_report")]
     private static partial int GetFeatureReport(DeviceSafeHandle device, ref byte data, nuint length);
 
+    [LibraryImport(Library, EntryPoint = "hid_send_output_report")]
+    private static partial int SendOutputReport(DeviceSafeHandle device, ref byte data, nuint length);
+
     [LibraryImport(Library, EntryPoint = "hid_get_input_report")]
     private static partial int GetInputReport(DeviceSafeHandle device, ref byte data, nuint length);
 
@@ -154,6 +162,9 @@ internal static partial class NativeMethods
 
     [LibraryImport(Library, EntryPoint = "hid_error")]
     public static unsafe partial byte* Error(DeviceSafeHandle device);
+
+    [LibraryImport(Library, EntryPoint = "hid_read_error")]
+    public static unsafe partial byte* ReadError(DeviceSafeHandle device);
 
     [LibraryImport(Library, EntryPoint = "hid_version")]
     public static unsafe partial ApiVersion* Version();
