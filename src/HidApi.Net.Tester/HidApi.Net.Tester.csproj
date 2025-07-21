@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.CommandLine"/>
-    <ProjectReference Include="..\HidApi.Net\HidApi.Net.csproj"/>
+    <PackageReference Include="System.CommandLine" />
+    <ProjectReference Include="..\HidApi.Net\HidApi.Net.csproj" />
   </ItemGroup>
 </Project>
