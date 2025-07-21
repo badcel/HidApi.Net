@@ -1,29 +1,35 @@
 namespace HidApi;
 
-internal static class Enumerator
+public unsafe struct HidEnumerator : IDisposable
 {
-    public static IEnumerable<DeviceInfo> Enumerate(ushort vendorId, ushort productId)
+    private NativeDeviceInfo* _currentNativeInfo;
+    public DeviceInfo Current { get; private set; }
+
+    public HidEnumerator GetEnumerator() => this;
+
+    public HidEnumerator(ushort vendorId, ushort productId)
     {
-        var deviceInfos = new List<DeviceInfo>();
-        unsafe
+        _currentNativeInfo = NativeMethods.Enumerate(vendorId, productId);
+        Current = DeviceInfo.From(_currentNativeInfo);
+    }
+
+    public bool MoveNext()
+    {
+        _currentNativeInfo = _currentNativeInfo->Next;
+
+        if ((nint) _currentNativeInfo != nint.Zero)
         {
-            var deviceInfoPointer = NativeMethods.Enumerate(vendorId, productId);
-            try
-            {
-                var currentDeviceInfoPointer = deviceInfoPointer;
-
-                while ((IntPtr) currentDeviceInfoPointer != IntPtr.Zero)
-                {
-                    deviceInfos.Add(DeviceInfo.From(currentDeviceInfoPointer));
-                    currentDeviceInfoPointer = currentDeviceInfoPointer->Next;
-                }
-            }
-            finally
-            {
-                NativeMethods.FreeEnumeration(deviceInfoPointer);
-            }
+            Current = DeviceInfo.From(_currentNativeInfo);
+            return true;
         }
+        else
+        {
+            return false;
+        }
+    }
 
-        return deviceInfos;
+    public void Dispose()
+    {
+        NativeMethods.FreeEnumeration(_currentNativeInfo);
     }
 }
