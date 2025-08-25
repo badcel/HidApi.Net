@@ -43,7 +43,7 @@ jobs:
       - name: Build website
         run: docfx docs/docfx.json
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: './_site'
       - name: Deploy to GitHub Pages
