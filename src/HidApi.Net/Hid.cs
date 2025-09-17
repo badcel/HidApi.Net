@@ -6,7 +6,7 @@ namespace HidApi;
 /// <summary>
 /// Global methods to interact with HID devices.
 /// </summary>
-public static class Hid
+public static partial class Hid
 {
     /// <summary>
     /// Initializes HIDAPI.
@@ -33,14 +33,14 @@ public static class Hid
     }
 
     /// <summary>
-    /// Enuemrate available HID devices.
+    /// Enumerate available HID devices.
     /// </summary>
     /// <param name="vendorId">Vendor id of devices to open or 0 to match any vendor</param>
     /// <param name="productId">Product id of devices to open or 0 to match any product</param>
-    /// <returns>Enumerable of <seealso cref="DeviceInfo"/></returns>
-    public static IEnumerable<DeviceInfo> Enumerate(ushort vendorId = 0, ushort productId = 0)
+    /// <returns>A <see cref="DeviceInfos"/> struct allowing to enumerate over <seealso cref="DeviceInfo"/>.</returns>
+    public static DeviceInfos Enumerate(ushort vendorId = 0, ushort productId = 0)
     {
-        return Enumerator.Enumerate(vendorId, productId);
+        return new DeviceInfos(vendorId, productId);
     }
 
     /// <summary>
